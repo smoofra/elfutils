@@ -40,8 +40,7 @@
 #include <stdlib.h>
 
 /* System dependent headers */
-#include <byteswap.h>
-#include <endian.h>
+#include "portable-byteswap.h"
 #include <sys/mman.h>
 #include <sys/param.h>
 #include <unistd.h>

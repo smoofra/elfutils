@@ -20,8 +20,7 @@
 
 #include <ar.h>
 #include <argp.h>
-#include <byteswap.h>
-#include <endian.h>
+#include "portable-byteswap.h"
 #include <libelf.h>
 #include <obstack.h>
 #include <stdbool.h>

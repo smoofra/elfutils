@@ -22,8 +22,7 @@
 
 #include <argp.h>
 #include <assert.h>
-#include <byteswap.h>
-#include <endian.h>
+#include "portable-byteswap.h"
 #include <fcntl.h>
 #include <fnmatch.h>
 #include <gelf.h>

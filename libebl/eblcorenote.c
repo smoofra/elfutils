@@ -31,8 +31,7 @@
 #endif
 
 #include <assert.h>
-#include <byteswap.h>
-#include <endian.h>
+#include "portable-byteswap.h"
 #include <inttypes.h>
 #include <stdio.h>
 #include <stddef.h>
