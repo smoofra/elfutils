@@ -121,7 +121,7 @@ struct loclist
 };
 
 
-static int
+int
 loc_compare (const void *p1, const void *p2)
 {
   const struct loc_s *l1 = (const struct loc_s *) p1;

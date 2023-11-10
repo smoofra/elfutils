@@ -1381,6 +1381,25 @@ char * __libdw_filepath (const char *debugdir, const char *dir,
   internal_function;
 
 
+int
+loc_compare (const void *p1, const void *p2);
+
+int
+findcu_cb (const void *arg1, const void *arg2);
+
+int
+macro_op_compare (const void *p1, const void *p2);
+
+int
+files_lines_compare (const void *p1, const void *p2);
+
+int
+compare_cie (const void *a, const void *b);
+
+int
+compare_fde (const void *a, const void *b);
+
+
 /* Aliases to avoid PLTs.  */
 INTDECL (dwarf_aggregate_size)
 INTDECL (dwarf_attr)

@@ -35,7 +35,7 @@
 #include <search.h>
 #include "libdwP.h"
 
-static int
+int
 findcu_cb (const void *arg1, const void *arg2)
 {
   struct Dwarf_CU *cu1 = (struct Dwarf_CU *) arg1;

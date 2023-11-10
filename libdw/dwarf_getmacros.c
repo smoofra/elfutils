@@ -50,7 +50,7 @@ get_offset_from (Dwarf_Die *die, int name, Dwarf_Word *retp)
   return INTUSE(dwarf_formudata) (&attr, retp);
 }
 
-static int
+int
 macro_op_compare (const void *p1, const void *p2)
 {
   const Dwarf_Macro_Op_Table *t1 = (const Dwarf_Macro_Op_Table *) p1;

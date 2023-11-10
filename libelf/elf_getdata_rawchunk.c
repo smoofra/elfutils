@@ -40,7 +40,7 @@
 #include "libelfP.h"
 #include "common.h"
 
-static int
+int
 chunk_compare (const void *a, const void *b)
 {
   Elf_Data_Chunk *da = (Elf_Data_Chunk *)a;

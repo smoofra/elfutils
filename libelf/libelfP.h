@@ -617,4 +617,7 @@ extern void __libelf_reset_rawdata (Elf_Scn *scn, void *buf, size_t size,
 #define INVALID_NDX(ndx, type, data) \
   unlikely ((data)->d_size / sizeof (type) <= (unsigned int) (ndx))
 
+int
+chunk_compare (const void *a, const void *b);
+
 #endif  /* libelfP.h */

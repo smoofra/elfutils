@@ -1123,7 +1123,7 @@ read_srclines (Dwarf *dbg,
   return res;
 }
 
-static int
+int
 files_lines_compare (const void *p1, const void *p2)
 {
   const struct files_lines_s *t1 = p1;

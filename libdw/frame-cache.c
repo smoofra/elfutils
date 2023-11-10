@@ -61,9 +61,9 @@ internal_function
 __libdw_destroy_frame_cache (Dwarf_CFI *cache)
 {
   /* Most of the data is in our two search trees.  */
-  tdestroy (cache->fde_tree, free_fde);
-  tdestroy (cache->cie_tree, free_cie);
-  tdestroy (cache->expr_tree, free_expr);
+  portable_tdestroy (&cache->fde_tree, free_fde, compare_fde);
+  portable_tdestroy (&cache->cie_tree, free_cie, compare_cie);
+  portable_tdestroy (&cache->expr_tree, free_expr, loc_compare);
 
   if (cache->ebl != NULL && cache->ebl != (void *) -1l)
     ebl_closebackend (cache->ebl);

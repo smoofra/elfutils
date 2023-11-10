@@ -132,7 +132,7 @@ elf_end (Elf *elf)
 		 == offsetof (struct Elf, state.elf64.rawchunks))
 	     ? elf->state.elf32.rawchunks
 	     : elf->state.elf64.rawchunks);
-	tdestroy (rawchunks, free_chunk);
+	portable_tdestroy (&rawchunks, free_chunk, chunk_compare);
 
 	Elf_ScnList *list = (elf->class == ELFCLASS32
 			     || (offsetof (struct Elf, state.elf32.scns)

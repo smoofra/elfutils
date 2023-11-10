@@ -62,7 +62,7 @@ internal_function
 __libdwfl_module_free (Dwfl_Module *mod)
 {
   if (mod->lazy_cu_root != NULL)
-    tdestroy (mod->lazy_cu_root, nofree);
+    portable_tdestroy (&mod->lazy_cu_root, nofree, compare_cukey);
 
   if (mod->aranges != NULL)
     free (mod->aranges);

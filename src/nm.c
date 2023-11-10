@@ -1510,10 +1510,10 @@ show_symbols (int fd, Ebl *ebl, GElf_Ehdr *ehdr,
 
   if (dbg != NULL)
     {
-      tdestroy (global_root, free);
+      portable_tdestroy (&global_root, free, global_compare);
       global_root = NULL;
 
-      tdestroy (local_root, free);
+      portable_tdestroy (&local_root, free, local_compare);
       local_root = NULL;
 
       if (dwfl == NULL)

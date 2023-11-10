@@ -210,7 +210,6 @@ extern char *__cxa_demangle (const char *mangled_name, char *output_buffer,
   extern int never_defined_just_used_for_checking[(expr) ? 1 : -1]	\
     __attribute__ ((unused))
 
-#endif /* system.h */
 
 #if defined(__APPLE__)
 #include <libgen.h>
@@ -224,4 +223,6 @@ static inline char *strchrnul(const char *s, int c) {
 }
 #endif
 
-#endif
+#include "portable-tdestroy.h"
+
+#endif /* system.h */

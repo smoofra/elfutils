@@ -32,12 +32,13 @@
 
 #include "cfi.h"
 #include "encoded-value.h"
+#include "libdwP.h"
 #include <assert.h>
 #include <search.h>
 #include <stdlib.h>
 
 
-static int
+int
 compare_cie (const void *a, const void *b)
 {
   const struct dwarf_cie *cie1 = a;

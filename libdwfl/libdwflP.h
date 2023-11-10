@@ -802,5 +802,7 @@ INTDECL (dwfl_get_debuginfod_client)
 /* The default used by dwfl_standard_find_debuginfo.  */
 #define DEFAULT_DEBUGINFO_PATH ":.debug:/usr/lib/debug"
 
+int
+compare_cukey (const void *a, const void *b);
 
 #endif	/* libdwflP.h */

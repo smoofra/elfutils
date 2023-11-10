@@ -181,6 +181,17 @@ noop (void *arg __attribute__ ((unused)))
 
 
 static int
+ptrcompare (const void *p1, const void *p2)
+{
+  if ((uintptr_t) p1 < (uintptr_t) p2)
+    return -1;
+  if ((uintptr_t) p1 > (uintptr_t) p2)
+    return 1;
+  return 0;
+}
+
+
+static int
 open_rootdir_file (const char *fname)
 {
   char *new_fname = NULL;
@@ -461,20 +472,9 @@ cannot get relocation at index %d in section %zu in '%s': %s"),
     close (fd2);
 
   free (segments);
-  tdestroy (knownsrcs, noop);
+  portable_tdestroy (&knownsrcs, noop, ptrcompare);
 
   return result;
-}
-
-
-static int
-ptrcompare (const void *p1, const void *p2)
-{
-  if ((uintptr_t) p1 < (uintptr_t) p2)
-    return -1;
-  if ((uintptr_t) p1 > (uintptr_t) p2)
-    return 1;
-  return 0;
 }
 
 

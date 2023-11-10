@@ -151,7 +151,7 @@ less_lazy (Dwfl_Module *mod)
     return;
 
   /* We know about all the CUs now, we don't need this table.  */
-  tdestroy (mod->lazy_cu_root, nofree);
+  portable_tdestroy (&mod->lazy_cu_root, nofree, compare_cukey);
   mod->lazy_cu_root = NULL;
 }
 
@@ -161,7 +161,7 @@ cudie_offset (const struct dwfl_cu *cu)
   return __libdw_first_die_off_from_cu (cu->die.cu);
 }
 
-static int
+int
 compare_cukey (const void *a, const void *b)
 {
   Dwarf_Off a_off = cudie_offset (a);

@@ -31,12 +31,13 @@
 #endif
 
 #include "cfi.h"
+#include "libdwP.h"
 #include <search.h>
 #include <stdlib.h>
 
 #include "encoded-value.h"
 
-static int
+int
 compare_fde (const void *a, const void *b)
 {
   const struct dwarf_fde *fde1 = a;
