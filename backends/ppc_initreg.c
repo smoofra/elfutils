@@ -68,9 +68,12 @@ ppc_dwarf_to_regno (Ebl *ebl __attribute__ ((unused)), unsigned *regno)
   abort ();
 }
 
-__typeof (ppc_dwarf_to_regno)
-     ppc64_dwarf_to_regno
-     __attribute__ ((alias ("ppc_dwarf_to_regno")));
+bool
+ppc64_dwarf_to_regno (Ebl *ebl, unsigned *regno) {
+  return ppc_dwarf_to_regno(ebl, regno);
+}
+
+
 
 bool
 ppc_set_initial_registers_tid (pid_t tid __attribute__ ((unused)),
@@ -127,6 +130,8 @@ ppc_set_initial_registers_tid (pid_t tid __attribute__ ((unused)),
 #endif /* __powerpc__ */
 }
 
-__typeof (ppc_set_initial_registers_tid)
-     ppc64_set_initial_registers_tid
-     __attribute__ ((alias ("ppc_set_initial_registers_tid")));
+bool
+ppc64_set_initial_registers_tid (pid_t tid, ebl_tid_registers_t *setfunc, void *arg)
+{
+  return ppc_set_initial_registers_tid(tid, setfunc, arg);
+}

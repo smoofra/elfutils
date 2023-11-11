@@ -204,5 +204,10 @@ ppc_register_info (Ebl *ebl __attribute__ ((unused)),
   return namelen;
 }
 
-__typeof (ppc_register_info)
-     ppc64_register_info __attribute__ ((alias ("ppc_register_info")));
+ssize_t
+ppc64_register_info (Ebl *ebl,
+  int regno, char *name, size_t namelen,
+  const char **prefix, const char **setname,
+  int *bits, int *type) {
+    return ppc_register_info(ebl, regno, name, namelen, prefix, setname, bits, type);
+}

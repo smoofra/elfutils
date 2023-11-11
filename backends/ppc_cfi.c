@@ -72,6 +72,7 @@ ppc_abi_cfi (Ebl *ebl __attribute__ ((unused)), Dwarf_CIE *abi_info)
   return 0;
 }
 
-__typeof (ppc_abi_cfi)
-     ppc64_abi_cfi
-     __attribute__ ((alias ("ppc_abi_cfi")));
+int
+ppc64_abi_cfi (Ebl *ebl, Dwarf_CIE *abi_info) {
+  return ppc_abi_cfi(ebl, abi_info);
+}

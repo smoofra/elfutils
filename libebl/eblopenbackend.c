@@ -634,8 +634,18 @@ default_copy_reloc_p (int reloc __attribute__ ((unused)))
 {
   return false;
 }
-strong_alias (default_copy_reloc_p, default_none_reloc_p)
-strong_alias (default_copy_reloc_p, default_relative_reloc_p)
+
+static bool
+default_none_reloc_p (int reloc __attribute__ ((unused)))
+{
+  return false;
+}
+
+static bool
+default_relative_reloc_p (int reloc __attribute__ ((unused)))
+{
+  return false;
+}
 
 static bool
 default_check_special_symbol (Elf *elf __attribute__ ((unused)),

@@ -48,5 +48,8 @@ EBLHOOK(auxv_info) (GElf_Xword a_type, const char **name, const char **format)
   return 1;
 }
 
-__typeof (i386_auxv_info) x86_64_auxv_info
-			  __attribute__ ((alias ("i386_auxv_info")));
+int
+x86_64_auxv_info (GElf_Xword a_type, const char **name, const char **format)
+{
+  return i386_auxv_info(a_type, name, format);
+}
