@@ -106,6 +106,20 @@ endif
 libdw_pic_a_SOURCES =
 am_libdw_pic_a_OBJECTS = $(libdw_a_SOURCES:.c=.os)
 
+if GNU_LINKER
+WL_SONAME=-Wl,--soname,$@.$(VERSION),--enable-new-dtags
+endif
+
+if SYMBOL_VERSIONING
+WL_VERSION_SCRIPT=-WL,--version-script,$<
+endif
+
+if HOST_IS_ELF
+TEXTREL_CHECK=$(textrel_check)
+else
+TEXTREL_CHECK=true
+endif
+
 libdw_so_LIBS = ../libebl/libebl_pic.a ../backends/libebl_backends_pic.a \
 		../libcpu/libcpu_pic.a libdw_pic.a ../libdwelf/libdwelf_pic.a \
 		../libdwfl/libdwfl_pic.a
@@ -113,12 +127,11 @@ libdw_so_DEPS = ../lib/libeu.a ../libelf/libelf.so
 libdw_so_LDLIBS = $(libdw_so_DEPS) -ldl -lz $(argp_LDADD) $(fts_LIBS) $(obstack_LIBS) $(zip_LIBS) -pthread
 libdw.so: $(srcdir)/libdw.map $(libdw_so_LIBS) $(libdw_so_DEPS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
-		-Wl,--soname,$@.$(VERSION),--enable-new-dtags \
-		-Wl,--version-script,$< \
+		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
-		-Wl,--whole-archive $(libdw_so_LIBS) -Wl,--no-whole-archive \
+		$(foreach l,$(libdw_so_LIBS),$(WHOLE_ARCHIVE) $l $(NO_WHOLE_ARCHIVE)) \
 		$(libdw_so_LDLIBS)
-	@$(textrel_check)
+	@$(TEXTREL_CHECK)
 	$(AM_V_at)ln -fs $@ $@.$(VERSION)
 
 install: install-am libdw.so

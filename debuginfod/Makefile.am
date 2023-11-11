@@ -58,7 +58,13 @@ endif
 libebl = ../libebl/libebl.a
 libeu = ../lib/libeu.a
 
+if GNU_LINKER
 AM_LDFLAGS = -Wl,-rpath-link,../libelf:../libdw:.
+endif
+
+if APPLE_LINKER
+AM_LDFLAGS = -Wl,-rpath,@executable_path/../libelf -Wl,-rpath,@executable_path/../libdw -Wl,-rpath,@executable_path
+endif
 
 bin_PROGRAMS =
 if DEBUGINFOD
@@ -99,14 +105,29 @@ libdebuginfod_so_LDLIBS =
 else
 libdebuginfod_so_LDLIBS = -lpthread $(libcurl_LIBS) $(fts_LIBS) $(libelf)
 endif
+
+if GNU_LINKER
+WL_SONAME=-Wl,--soname,$(LIBDEBUGINFOD_SONAME)
+endif
+
+if SYMBOL_VERSIONING
+WL_VERSION_SCRIPT=-WL,--version-script,$<
+endif
+
+if HOST_IS_ELF
+TEXTREL_CHECK=$(textrel_check)
+else
+TEXTREL_CHECK=true
+endif
+
+
 $(LIBDEBUGINFOD_SONAME): $(srcdir)/libdebuginfod.map $(libdebuginfod_so_LIBS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
-		-Wl,--soname,$(LIBDEBUGINFOD_SONAME) \
-		-Wl,--version-script,$< \
+		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
-		-Wl,--whole-archive $(libdebuginfod_so_LIBS) -Wl,--no-whole-archive \
+		$(WHOLE_ARCHIVE) $(libdebuginfod_so_LIBS) $(NO_WHOLE_ARCHIVE) \
 		$(libdebuginfod_so_LDLIBS)
-	@$(textrel_check)
+	@$(TEXTREL_CHECK)
 
 libdebuginfod.so: $(LIBDEBUGINFOD_SONAME)
 	ln -fs $< $@

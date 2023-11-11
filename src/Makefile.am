@@ -23,7 +23,15 @@ AM_CPPFLAGS += -I$(srcdir)/../libelf -I$(srcdir)/../libebl \
 	    -I$(srcdir)/../libdw -I$(srcdir)/../libdwelf \
 	    -I$(srcdir)/../libdwfl -I$(srcdir)/../libasm
 
-AM_LDFLAGS = -Wl,-rpath-link,../libelf:../libdw $(STACK_USAGE_NO_ERROR)
+AM_LDFLAGS = $(STACK_USAGE_NO_ERROR)
+
+if GNU_LINKER
+AM_LDFLAGS += -Wl,-rpath-link,../libelf:../libdw
+endif
+
+if APPLE_LINKER
+AM_LDFLAGS += -Wl,-rpath,@executable_path/../libelf -Wl,-rpath,@executable_path/../libdw
+endif
 
 bin_PROGRAMS = readelf nm size strip elflint findtextrel addr2line \
 	       elfcmp objdump ranlib strings ar unstrip stack elfcompress \

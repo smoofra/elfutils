@@ -60,15 +60,29 @@ if USE_LOCKS
 libasm_so_LDLIBS += -lpthread
 endif
 
+if GNU_LINKER
+WL_SONAME=-Wl,--soname,$@.$(VERSION)
+endif
+
+if SYMBOL_VERSIONING
+WL_VERSION_SCRIPT=-WL,--version-script,$<
+endif
+
+if HOST_IS_ELF
+TEXTREL_CHECK=$(textrel_check)
+else
+TEXTREL_CHECK=true
+endif
+
+
 libasm_so_LIBS = libasm_pic.a
 libasm.so: $(srcdir)/libasm.map $(libasm_so_LIBS) $(libasm_so_DEPS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
-		-Wl,--soname,$@.$(VERSION) \
-		-Wl,--version-script,$< \
+		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
-		-Wl,--whole-archive $(libasm_so_LIBS) -Wl,--no-whole-archive \
+		$(WHOLE_ARCHIVE) $(libasm_so_LIBS) $(NO_WHOLE_ARCHIVE) \
 		$(libasm_so_LDLIBS)
-	@$(textrel_check)
+	@$(TEXTREL_CHECK)
 	$(AM_V_at)ln -fs $@ $@.$(VERSION)
 
 install: install-am libasm.so

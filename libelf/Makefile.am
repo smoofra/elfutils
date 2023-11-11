@@ -106,20 +106,33 @@ libelf_pic_a_SOURCES =
 am_libelf_pic_a_OBJECTS = $(libelf_a_SOURCES:.c=.os)
 
 libelf_so_DEPS = ../lib/libeu.a
-libelf_so_LDLIBS = $(libelf_so_DEPS) -lz $(zstd_LIBS)
+libelf_so_LDLIBS = $(LIBS) $(libelf_so_DEPS) -lz $(zstd_LIBS)
 if USE_LOCKS
 libelf_so_LDLIBS += -lpthread
+endif
+
+if GNU_LINKER
+WL_SONAME=-Wl,--soname,$@.$(VERSION)
+endif
+
+if SYMBOL_VERSIONING
+WL_VERSION_SCRIPT=-WL,--version-script,$<
+endif
+
+if HOST_IS_ELF
+TEXTREL_CHECK=$(textrel_check)
+else
+TEXTREL_CHECK=true
 endif
 
 libelf_so_LIBS = libelf_pic.a
 libelf.so: $(srcdir)/libelf.map $(libelf_so_LIBS) $(libelf_so_DEPS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
-		-Wl,--soname,$@.$(VERSION) \
-		-Wl,--version-script,$< \
+		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
-		-Wl,--whole-archive $(libelf_so_LIBS) -Wl,--no-whole-archive \
+		$(WHOLE_ARCHIVE) $(libelf_so_LIBS) $(NO_WHOLE_ARCHIVE) \
 		$(libelf_so_LDLIBS)
-	@$(textrel_check)
+	@$(TEXTREL_CHECK)
 	$(AM_V_at)ln -fs $@ $@.$(VERSION)
 
 install: install-am libelf.so

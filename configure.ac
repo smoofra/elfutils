@@ -155,7 +155,55 @@ AC_SUBST([fpie_CFLAGS])
 
 dso_LDFLAGS="-shared"
 
-NO_UNDEFINED=-Wl,--no-undefined
+
+WHOLE_ARCHIVE=""
+GNU_LINKER="no"
+APPLE_LINKER="no"
+
+AC_CACHE_CHECK([if linker is GNU], ac_cv_whole_archive, [dnl
+save_LDFLAGS="$LDFLAGS"
+LDFLAGS="$save_LDFLAGS -shared -Wl,--whole-archive"
+AC_LINK_IFELSE([AC_LANG_SOURCE()], ac_cv_whole_archive=yes, ac_cv_whole_archive=no)
+LDFLAGS="$save_LDFLAGS"
+])
+if test "$ac_cv_whole_archive" = "yes"; then
+	WHOLE_ARCHIVE="-Wl,--whole-archive"
+  NO_WHOLE_ARCHIVE="-Wl,--no-whole-archive"
+  NO_UNDEFINED=-Wl,--no-undefined
+  GNU_LINKER="yes"
+fi
+
+AC_CACHE_CHECK([if linker is Apple ld64], ac_cv_all_load, [dnl
+save_LDFLAGS="$LDFLAGS"
+LDFLAGS="$save_LDFLAGS -shared -Wl,-all_load"
+AC_LINK_IFELSE([AC_LANG_SOURCE()], ac_cv_all_load=yes, ac_cv_all_load=no)
+LDFLAGS="$save_LDFLAGS"
+])
+if test "$ac_cv_all_load" = "yes"; then
+	WHOLE_ARCHIVE="-Wl,-force_load"
+  NO_WHOLE_ARCHIVE=""
+  NO_UNDEFINED="-Wl,-undefined,error"
+  APPLE_LINKER="yes"
+fi
+
+
+if test $GNU_LINKER = yes -a $APPLE_LINKER = yes; then
+  AC_MSG_ERROR([linker detection failed, it cannot be both apple and gnu])
+fi
+
+if test $GNU_LINKER != yes -a $APPLE_LINKER != yes; then
+  AC_MSG_ERROR([unknown linker])
+fi
+
+
+AC_SUBST(WHOLE_ARCHIVE)
+AC_SUBST(NO_WHOLE_ARCHIVE)
+AC_SUBST(NO_UNDEFINED)
+AM_CONDITIONAL(GNU_LINKER, test $GNU_LINKER = yes)
+AM_CONDITIONAL(APPLE_LINKER, test $APPLE_LINKER = yes)
+AM_CONDITIONAL(HOST_IS_ELF, test $APPLE_LINKER = no)
+
+
 AC_ARG_ENABLE([sanitize-memory],
               AS_HELP_STRING([--enable-sanitize-memory],
                              [Use clang memory sanitizer]),
@@ -175,7 +223,6 @@ if test "$use_msan" = yes; then
         CFLAGS="$old_CFLAGS" CXXFLAGS="$old_CXXFLAGS")
   LDFLAGS="$old_LDFLAGS"
 fi
-AC_SUBST(NO_UNDEFINED)
 AM_CONDITIONAL(USE_MEMORY_SANITIZER, test "$use_msan" = yes)
 
 ZDEFS_LDFLAGS="-Wl,-z,defs"
@@ -191,11 +238,13 @@ fi
 
 # We really want build-ids. Warn and force generating them if gcc was
 # configure without --enable-linker-build-id
-AC_CACHE_CHECK([whether the compiler generates build-ids], ac_cv_buildid, [dnl
-AC_LINK_IFELSE([AC_LANG_PROGRAM()],[ac_cv_buildid=yes; $READELF -n conftest$EXEEXT | grep -q NT_GNU_BUILD_ID || ac_cv_buildid=no],AC_MSG_FAILURE([unexpected compile failure]))])
-if test "$ac_cv_buildid" = "no"; then
-	AC_MSG_WARN([compiler doesn't generate build-id by default])
-	LDFLAGS="$LDFLAGS -Wl,--build-id"
+if $GNU_LINKER = yes; then
+  AC_CACHE_CHECK([whether the compiler generates build-ids], ac_cv_buildid, [dnl
+  AC_LINK_IFELSE([AC_LANG_PROGRAM()],[ac_cv_buildid=yes; $READELF -n conftest$EXEEXT | grep -q NT_GNU_BUILD_ID || ac_cv_buildid=no],AC_MSG_FAILURE([unexpected compile failure]))])
+  if test "$ac_cv_buildid" = "no" ; then
+    AC_MSG_WARN([compiler does not generate build-id by default])
+    LDFLAGS="$LDFLAGS -Wl,--build-id"
+  fi
 fi
 
 ZRELRO_LDFLAGS="-Wl,-z,relro"
@@ -520,17 +569,25 @@ AC_COMPILE_IFELSE([AC_LANG_SOURCE([dnl
 int foo(int x) { return x + 1; }
 NEW_VERSION (foo, ELFUTILS_12.12)
 ])], ac_cv_symbol_versioning=yes, ac_cv_symbol_versioning=no)])
-if test "$ac_cv_symbol_versioning" = "no"; then
+if test "$ac_cv_symbol_versioning" = "no" -a "$GNU_LINKER" = "yes"; then
     if test "x$enable_symbol_versioning" != "xno"; then
         AC_MSG_ERROR([Symbol versioning is not supported.
                       Use --disable-symbol-versioning to build without.])
     fi
 fi
-
+if test $GNU_LINKER = yes ; then
+  AS_IF([test "x$enable_symbol_versioning" = "xno" -a "$GNU_LINKER" = "yes"],
+        [AC_MSG_WARN([Disabling symbol versioning breaks ABI compatibility.])
+        enable_symbol_versioning=no],[enable_symbol_versioning=yes])
+  enable_symbol_versioning_str=$enable_symbol_versioning
+else
+  enable_symbol_versioning=no
+  enable_symbol_versioning_str="n/a for this platform"
+fi
 AM_CONDITIONAL(SYMBOL_VERSIONING, [test "x$enable_symbol_versioning" != "xno"])
-AS_IF([test "x$enable_symbol_versioning" = "xno"],
-      [AC_MSG_WARN([Disabling symbol versioning breaks ABI compatibility.])
-       enable_symbol_versioning=no],[enable_symbol_versioning=yes])
+
+
+
 
 AC_CACHE_CHECK([whether gcc accepts -Wstack-usage], ac_cv_stack_usage, [dnl
 old_CFLAGS="$CFLAGS"
@@ -656,10 +713,10 @@ esac
 AC_SUBST([fts_LIBS])
 
 saved_LIBS="$LIBS"
-AC_SEARCH_LIBS([_obstack_free], [obstack])
+AC_SEARCH_LIBS([obstack_free], [obstack])
 LIBS="$saved_LIBS"
 case "$ac_cv_search__obstack_free" in
-        no) AC_MSG_FAILURE([failed to find _obstack_free]) ;;
+        no) AC_MSG_FAILURE([failed to find obstack_free]) ;;
         -l*) obstack_LIBS="$ac_cv_search__obstack_free" ;;
         *) obstack_LIBS= ;;
 esac
@@ -880,6 +937,8 @@ AC_ARG_ENABLE(debuginfod-urls,
 AC_SUBST(DEBUGINFOD_URLS, $default_debuginfod_urls)                
 AC_CONFIG_FILES([config/profile.sh config/profile.csh])
 
+
+
 AC_OUTPUT
 
 AC_MSG_NOTICE([
@@ -904,7 +963,7 @@ AC_MSG_NOTICE([
     zstd compression support           : ${with_zstd_compress}
     libstdc++ demangle support         : ${enable_demangler}
     File textrel check                 : ${enable_textrelcheck}
-    Symbol versioning                  : ${enable_symbol_versioning}
+    Symbol versioning                  : ${enable_symbol_versioning_str}
 
   NOT RECOMMENDED FEATURES (should all be no)
     Experimental thread safety         : ${use_locks}
