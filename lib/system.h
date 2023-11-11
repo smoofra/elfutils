@@ -223,6 +223,11 @@ static inline char *strchrnul(const char *s, int c) {
 }
 #endif
 
+#if defined(__APPLE__)
+#define fputc_unlocked(c,f) fputc(c,f)
+#define fputs_unlocked(s,f) fputs(s,f)
+#endif
+
 #include "portable-tdestroy.h"
 
 #endif /* system.h */
