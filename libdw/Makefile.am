@@ -133,19 +133,19 @@ uninstall: uninstall-am
 	rm -f $(DESTDIR)$(libdir)/libdw.so
 	rmdir --ignore-fail-on-non-empty $(DESTDIR)$(includedir)/elfutils
 
-libdwfl_objects = $(shell $(AR) t ../libdwfl/libdwfl.a)
+libdwfl_objects = $(shell $(AR) t ../libdwfl/libdwfl.a | grep -v SYMDEF)
 libdw_a_LIBADD = $(addprefix ../libdwfl/,$(libdwfl_objects))
 
-libdwelf_objects = $(shell $(AR) t ../libdwelf/libdwelf.a)
+libdwelf_objects = $(shell $(AR) t ../libdwelf/libdwelf.a | grep -v SYMDEF)
 libdw_a_LIBADD += $(addprefix ../libdwelf/,$(libdwelf_objects))
 
-libebl_objects = $(shell $(AR) t ../libebl/libebl.a)
+libebl_objects = $(shell $(AR) t ../libebl/libebl.a | grep -v SYMDEF)
 libdw_a_LIBADD += $(addprefix ../libebl/,$(libebl_objects))
 
-backends_objects = $(shell $(AR) t ../backends/libebl_backends.a)
+backends_objects = $(shell $(AR) t ../backends/libebl_backends.a | grep -v SYMDEF)
 libdw_a_LIBADD += $(addprefix ../backends/,$(backends_objects))
 
-libcpu_objects = $(shell $(AR) t ../libcpu/libcpu.a)
+libcpu_objects = $(shell $(AR) t ../libcpu/libcpu.a| grep -v SYMDEF)
 libdw_a_LIBADD += $(addprefix ../libcpu/,$(libcpu_objects))
 
 noinst_HEADERS = libdwP.h memory-access.h dwarf_abbrev_hash.h \
