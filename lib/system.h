@@ -211,3 +211,17 @@ extern char *__cxa_demangle (const char *mangled_name, char *output_buffer,
     __attribute__ ((unused))
 
 #endif /* system.h */
+
+#if defined(__APPLE__)
+#include <libgen.h>
+#define program_invocation_short_name basename((char*)getprogname())
+#endif
+
+#if defined(__APPLE__)
+static inline char *strchrnul(const char *s, int c) {
+  char *p = strchr(s, c);
+  return p == NULL ? (char*)s + strlen(s) : p;
+}
+#endif
+
+#endif
