@@ -84,7 +84,7 @@ void debuginfod_end (debuginfod_client *c) { }
 #include <regex.h>
 #include <string.h>
 #include <stdbool.h>
-#include <linux/limits.h>
+//#include <linux/limits.h>
 #include <time.h>
 #include <utime.h>
 #include <sys/syscall.h>
