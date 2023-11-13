@@ -36,7 +36,9 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
@@ -2525,10 +2527,12 @@ handle_implicit_modules (const struct arg_info *info)
 int
 main (int argc, char **argv)
 {
+#ifndef __APPLE__
   /* We use no threads here which can interfere with handling a stream.  */
   __fsetlocking (stdin, FSETLOCKING_BYCALLER);
   __fsetlocking (stdout, FSETLOCKING_BYCALLER);
   __fsetlocking (stderr, FSETLOCKING_BYCALLER);
+#endif
 
   /* Set locale.  */
   setlocale (LC_ALL, "");

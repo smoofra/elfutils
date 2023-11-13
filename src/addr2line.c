@@ -31,7 +31,9 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -152,8 +154,10 @@ main (int argc, char *argv[])
   int remaining;
   int result = 0;
 
+#ifndef __APPLE__
   /* We use no threads here which can interfere with handling a stream.  */
   (void) __fsetlocking (stdout, FSETLOCKING_BYCALLER);
+#endif
 
   /* Set locale.  */
   (void) setlocale (LC_ALL, "");
@@ -175,8 +179,10 @@ main (int argc, char *argv[])
      line, read from stdin.  */
   if (remaining == argc)
     {
+      #ifndef __APPLE__
       /* We use no threads here which can interfere with handling a stream.  */
       (void) __fsetlocking (stdin, FSETLOCKING_BYCALLER);
+      #endif
 
       char *buf = NULL;
       size_t len = 0;

@@ -30,7 +30,9 @@
 #include <obstack.h>
 #include <stdlib.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -74,10 +76,12 @@ static const struct argp argp =
 int
 main (int argc, char *argv[])
 {
+#ifndef __APPLE__
   /* We use no threads here which can interfere with handling a stream.  */
   (void) __fsetlocking (stdin, FSETLOCKING_BYCALLER);
   (void) __fsetlocking (stdout, FSETLOCKING_BYCALLER);
   (void) __fsetlocking (stderr, FSETLOCKING_BYCALLER);
+#endif
 
   /* Set locale.  */
   (void) setlocale (LC_ALL, "");

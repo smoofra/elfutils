@@ -30,7 +30,9 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -141,9 +143,11 @@ static off_t elfmap_off;
 int
 main (int argc, char *argv[])
 {
+#ifndef __APPLE__
   /* We use no threads.  */
   __fsetlocking (stdin, FSETLOCKING_BYCALLER);
   __fsetlocking (stdout, FSETLOCKING_BYCALLER);
+#endif
 
   /* Set locale.  */
   (void) setlocale (LC_ALL, "");

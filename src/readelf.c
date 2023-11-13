@@ -35,7 +35,9 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -382,8 +384,10 @@ cleanup_list (struct section_argument *list)
 int
 main (int argc, char *argv[])
 {
+#ifndef __APPLE__
   /* We use no threads here which can interfere with handling a stream.  */
   (void) __fsetlocking (stdout, FSETLOCKING_BYCALLER);
+#endif
 
   /* Set locale.  */
   setlocale (LC_ALL, "");

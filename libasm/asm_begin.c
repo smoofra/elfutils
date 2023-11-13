@@ -34,7 +34,9 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
+#ifndef __APPLE__
 #include <stdio_ext.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 
@@ -56,8 +58,10 @@ prepare_text_output (AsmCtx_t *result)
 	  free (result);
 	  result = NULL;
 	}
+#ifndef __APPLE__
       else
 	__fsetlocking (result->out.file, FSETLOCKING_BYCALLER);
+#endif
     }
 
   return result;
