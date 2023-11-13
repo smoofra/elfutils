@@ -54,7 +54,7 @@ libasm_a_SOURCES = asm_begin.c asm_abort.c asm_end.c asm_error.c \
 libasm_pic_a_SOURCES =
 am_libasm_pic_a_OBJECTS = $(libasm_a_SOURCES:.c=.os)
 
-libasm_so_DEPS = ../lib/libeu.a ../libebl/libebl_pic.a ../libelf/libelf.so ../libdw/libdw.so
+libasm_so_DEPS = ../lib/libeu.a ../libebl/libebl_pic.a ../libelf/libelf.so ../libdw/libdw.so ../libdwelf/libdwelf.a
 libasm_so_LDLIBS = $(libasm_so_DEPS)
 if USE_LOCKS
 libasm_so_LDLIBS += -lpthread

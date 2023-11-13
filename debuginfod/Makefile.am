@@ -57,6 +57,8 @@ libdebuginfod = ./libdebuginfod.so
 endif
 libebl = ../libebl/libebl.a
 libeu = ../lib/libeu.a
+libdwelf = ../libdwelf/libdwelf.a
+libdwfl = ../libdwfl/libdwfl.a
 
 if GNU_LINKER
 AM_LDFLAGS = -Wl,-rpath-link,../libelf:../libdw:.
@@ -79,7 +81,7 @@ debuginfod_SOURCES = debuginfod.cxx
 debuginfod_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(libmicrohttpd_LIBS) $(sqlite3_LIBS) $(libarchive_LIBS) -lpthread -ldl
 
 debuginfod_find_SOURCES = debuginfod-find.c
-debuginfod_find_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS)
+debuginfod_find_LDADD = $(libdw) $(libelf) $(libeu) $(libdwelf) $(libdwfl) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(zstd_LIBS) $(libdw)
 
 if LIBDEBUGINFOD
 noinst_LIBRARIES = libdebuginfod.a
