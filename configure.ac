@@ -203,6 +203,13 @@ AM_CONDITIONAL(GNU_LINKER, test $GNU_LINKER = yes)
 AM_CONDITIONAL(APPLE_LINKER, test $APPLE_LINKER = yes)
 AM_CONDITIONAL(HOST_IS_ELF, test $APPLE_LINKER = no)
 
+LINUX=no
+case $host in
+  *-linux-* | *-linux)
+    LINUX=yes ;;
+esac
+AM_CONDITIONAL(LINUX, test $LINUX = yes)
+
 
 AC_ARG_ENABLE([sanitize-memory],
               AS_HELP_STRING([--enable-sanitize-memory],

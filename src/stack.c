@@ -74,12 +74,14 @@ static Elf *core = NULL;
 static const char *exec = NULL;
 static char *debuginfo_path = NULL;
 
+#ifdef __linux__
 static const Dwfl_Callbacks proc_callbacks =
   {
     .find_elf = dwfl_linux_proc_find_elf,
     .find_debuginfo = dwfl_standard_find_debuginfo,
     .debuginfo_path = &debuginfo_path,
   };
+#endif
 
 static const Dwfl_Callbacks core_callbacks =
   {
@@ -574,6 +576,9 @@ parse_opt (int key, char *arg __attribute__ ((unused)),
 
       if (pid != 0)
 	{
+#ifndef __linux__
+	  argp_error (state, N_("PID not implemented on this platform"));
+#else
 	  dwfl = dwfl_begin (&proc_callbacks);
 	  if (dwfl == NULL)
 	    error (EXIT_BAD, 0, "dwfl_begin: %s", dwfl_errmsg (-1));
@@ -585,7 +590,8 @@ parse_opt (int key, char *arg __attribute__ ((unused)),
 	  else if (err > 0)
 	    error (EXIT_BAD, err, "dwfl_linux_proc_report pid %lld",
 		   (long long) pid);
-	}
+#endif
+        }
 
       if (core != NULL)
 	{
@@ -601,6 +607,9 @@ parse_opt (int key, char *arg __attribute__ ((unused)),
 
       if (pid != 0)
 	{
+#ifndef __linux__
+	  argp_error (state, N_("PID not implemented on this platform"));
+#else
 	  int err = dwfl_linux_proc_attach (dwfl, pid, false);
 	  if (err < 0)
 	    error (EXIT_BAD, 0, "dwfl_linux_proc_attach pid %lld: %s",
@@ -608,6 +617,7 @@ parse_opt (int key, char *arg __attribute__ ((unused)),
 	  else if (err > 0)
 	    error (EXIT_BAD, err, "dwfl_linux_proc_attach pid %lld",
 		   (long long) pid);
+#endif
 	}
 
       if (core != NULL)

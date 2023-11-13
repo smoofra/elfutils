@@ -50,7 +50,6 @@ libdwfl_a_SOURCES = dwfl_begin.c dwfl_end.c dwfl_error.c dwfl_version.c \
 		    argp-std.c find-debuginfo.c \
 		    dwfl_build_id_find_elf.c \
 		    dwfl_build_id_find_debuginfo.c \
-		    linux-kernel-modules.c linux-proc-maps.c \
 		    dwfl_addrmodule.c dwfl_addrdwarf.c \
 		    cu.c dwfl_module_nextcu.c dwfl_nextcu.c dwfl_cumodule.c \
 		    dwfl_module_addrdie.c dwfl_addrdie.c \
@@ -69,7 +68,7 @@ libdwfl_a_SOURCES = dwfl_begin.c dwfl_end.c dwfl_error.c dwfl_version.c \
 		    dwfl_segment_report_module.c \
 		    link_map.c core-file.c open.c image-header.c \
 		    dwfl_frame.c frame_unwind.c dwfl_frame_pc.c \
-		    linux-pid-attach.c linux-core-attach.c dwfl_frame_regs.c \
+		     linux-core-attach.c dwfl_frame_regs.c \
 		    gzip.c debuginfod-client.c
 
 if BZLIB
@@ -80,6 +79,10 @@ libdwfl_a_SOURCES += lzma.c
 endif
 if ZSTD
 libdwfl_a_SOURCES += zstd.c
+endif
+
+if LINUX
+libdwfl_a_SOURCES += linux-pid-attach.c linux-proc-maps.c linux-kernel-modules.c
 endif
 
 libdwfl = $(libdw)

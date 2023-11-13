@@ -72,6 +72,7 @@ static const Dwfl_Callbacks offline_callbacks =
     .find_elf = INTUSE(dwfl_build_id_find_elf),
   };
 
+#ifdef __linux__
 static const Dwfl_Callbacks proc_callbacks =
   {
     .find_debuginfo = INTUSE(dwfl_standard_find_debuginfo),
@@ -88,6 +89,7 @@ static const Dwfl_Callbacks kernel_callbacks =
     .find_elf = INTUSE(dwfl_linux_kernel_find_elf),
     .section_address = INTUSE(dwfl_linux_kernel_module_section_address),
   };
+#endif // __linux__
 
 /* Structure held at state->HOOK.  */
 struct parse_opt
@@ -163,6 +165,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
       }
       break;
 
+#if __linux__
     case 'p':
       {
 	struct parse_opt *opt = state->hook;
@@ -207,6 +210,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 	  goto toomany;
       }
       break;
+#endif // __linux__
 
     case OPT_COREFILE:
       {
@@ -221,6 +225,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
       }
       break;
 
+#ifdef __linux__
     case 'k':
       {
 	struct parse_opt *opt = state->hook;
@@ -257,6 +262,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 	  goto toomany;
       }
       break;
+#endif // __linux__
 
     case ARGP_KEY_SUCCESS:
       {
