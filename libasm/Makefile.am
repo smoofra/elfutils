@@ -59,6 +59,7 @@ libasm_so_LDLIBS = $(libasm_so_DEPS)
 if USE_LOCKS
 libasm_so_LDLIBS += -lpthread
 endif
+libasm_so_LDLIBS += $(LIBINTL)
 
 if GNU_LINKER
 WL_SONAME=-Wl,--soname,$@.$(VERSION)

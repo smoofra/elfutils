@@ -110,6 +110,7 @@ libelf_so_LDLIBS = $(LIBS) $(libelf_so_DEPS) -lz $(zstd_LIBS)
 if USE_LOCKS
 libelf_so_LDLIBS += -lpthread
 endif
+libelf_so_LDLIBS += $(LIBINTL)
 
 if GNU_LINKER
 WL_SONAME=-Wl,--soname,$@.$(VERSION)

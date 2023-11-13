@@ -93,7 +93,7 @@ i386_lex_CFLAGS = -Wno-unused-label -Wno-unused-function -Wno-sign-compare \
 		  -Wno-implicit-fallthrough
 i386_parse.o: i386_parse.c i386.mnemonics
 i386_lex.o: i386_parse.h
-i386_gendis_LDADD = $(libeu) -lm $(obstack_LIBS)
+i386_gendis_LDADD = $(libeu) -lm $(obstack_LIBS) $(LIBINTL)
 
 i386_parse.h: i386_parse.c ;
 

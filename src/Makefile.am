@@ -75,25 +75,25 @@ ranlib_no_Wstack_usage = yes
 ar_no_Wstack_usage = yes
 unstrip_no_Wstack_usage = yes
 
-readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(argp_LDADD)
+readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
 nm_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) \
-	   $(demanglelib)
-size_LDADD = $(libelf) $(libeu) $(argp_LDADD)
-strip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD)
-elflint_LDADD  = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD)
-findtextrel_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD)
-addr2line_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(demanglelib)
-elfcmp_LDADD = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD)
-objdump_LDADD  = $(libasm) $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD)
-ranlib_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS)
-strings_LDADD = $(libelf) $(libeu) $(argp_LDADD)
-ar_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS)
-unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD)
-stack_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(demanglelib)
-elfcompress_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD)
-elfclassify_LDADD = $(libelf) $(libdw) $(libeu) $(argp_LDADD)
+	   $(demanglelib) $(LIBINTL)
+size_LDADD = $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+strip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+elflint_LDADD  = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+findtextrel_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+addr2line_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(demanglelib) $(LIBINTL)
+elfcmp_LDADD = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+objdump_LDADD  = $(libasm) $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+ranlib_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL)
+strings_LDADD = $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
+ar_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL)
+unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+stack_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(demanglelib) $(LIBINTL)
+elfcompress_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+elfclassify_LDADD = $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
 srcfiles_SOURCES = srcfiles.cxx
-srcfiles_LDADD = $(libdw) $(libelf) $(libeu)  $(argp_LDADD)
+srcfiles_LDADD = $(libdw) $(libelf) $(libeu)  $(argp_LDADD) $(LIBINTL)
 
 installcheck-binPROGRAMS: $(bin_PROGRAMS)
 	bad=0; pid=$$$$; list="$(bin_PROGRAMS)"; for p in $$list; do \

@@ -81,7 +81,7 @@ debuginfod_SOURCES = debuginfod.cxx
 debuginfod_LDADD = $(libdw) $(libelf) $(libeu) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(libmicrohttpd_LIBS) $(sqlite3_LIBS) $(libarchive_LIBS) -lpthread -ldl
 
 debuginfod_find_SOURCES = debuginfod-find.c
-debuginfod_find_LDADD = $(libdw) $(libelf) $(libeu) $(libdwelf) $(libdwfl) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(zstd_LIBS) $(libdw)
+debuginfod_find_LDADD = $(libdw) $(libelf) $(libeu) $(libdwelf) $(libdwfl) $(libdebuginfod) $(argp_LDADD) $(fts_LIBS) $(zstd_LIBS) $(libdw) -lz $(LIBINTL)
 
 if LIBDEBUGINFOD
 noinst_LIBRARIES = libdebuginfod.a
