@@ -9,6 +9,8 @@
 *.rej
 *.so
 *.so.1
+*.dylib
+*.dylib.1
 *~
 .#*
 .deps
@@ -31,3 +33,4 @@ Makefile.in
 /elfutils.spec
 /stamp-h1
 /version.h
+/tests/libelf.h
