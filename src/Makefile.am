@@ -52,9 +52,9 @@ libasm = ../libasm/libasm.a
 libdw = ../libdw/libdw.a -lz $(zip_LIBS) $(libelf) -ldl -lpthread
 libelf = ../libelf/libelf.a -lz $(zstd_LIBS)
 else
-libasm = ../libasm/libasm.so
-libdw = ../libdw/libdw.so
-libelf = ../libelf/libelf.so
+libasm = ../libasm/libasm$(SHEXT)
+libdw = ../libdw/libdw$(SHEXT)
+libelf = ../libelf/libelf$(SHEXT)
 endif
 libebl = ../libebl/libebl.a ../backends/libebl_backends.a ../libcpu/libcpu.a
 libeu = ../lib/libeu.a

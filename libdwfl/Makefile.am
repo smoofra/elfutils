@@ -86,8 +86,8 @@ libdwfl_a_SOURCES += linux-pid-attach.c linux-proc-maps.c linux-kernel-modules.c
 endif
 
 libdwfl = $(libdw)
-libdw = ../libdw/libdw.so
-libelf = ../libelf/libelf.so
+libdw = ../libdw/libdw$(SHEXT)
+libelf = ../libelf/libelf$(SHEXT)
 libebl = ../libebl/libebl.a
 libeu = ../lib/libeu.a
 

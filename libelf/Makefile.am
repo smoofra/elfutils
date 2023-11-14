@@ -36,7 +36,7 @@ VERSION = 1
 
 lib_LIBRARIES = libelf.a
 noinst_LIBRARIES = libelf_pic.a
-noinst_DATA = $(noinst_LIBRARIES:_pic.a=.so)
+noinst_DATA = $(noinst_LIBRARIES:_pic.a=$(SHEXT))
 include_HEADERS = libelf.h gelf.h nlist.h
 
 noinst_HEADERS = abstract.h common.h exttypes.h gelf_xlate.h libelfP.h \
@@ -127,7 +127,7 @@ TEXTREL_CHECK=true
 endif
 
 libelf_so_LIBS = libelf_pic.a
-libelf.so: $(srcdir)/libelf.map $(libelf_so_LIBS) $(libelf_so_DEPS)
+libelf$(SHEXT): $(srcdir)/libelf.map $(libelf_so_LIBS) $(libelf_so_DEPS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
 		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
@@ -136,17 +136,17 @@ libelf.so: $(srcdir)/libelf.map $(libelf_so_LIBS) $(libelf_so_DEPS)
 	@$(TEXTREL_CHECK)
 	$(AM_V_at)ln -fs $@ $@.$(VERSION)
 
-install: install-am libelf.so
+install: install-am libelf$(SHEXT)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL_PROGRAM) libelf.so $(DESTDIR)$(libdir)/libelf-$(PACKAGE_VERSION).so
-	ln -fs libelf-$(PACKAGE_VERSION).so $(DESTDIR)$(libdir)/libelf.so.$(VERSION)
-	ln -fs libelf.so.$(VERSION) $(DESTDIR)$(libdir)/libelf.so
+	$(INSTALL_PROGRAM) libelf$(SHEXT) $(DESTDIR)$(libdir)/libelf-$(PACKAGE_VERSION)$(SHEXT)
+	ln -fs libelf-$(PACKAGE_VERSION)$(SHEXT) $(DESTDIR)$(libdir)/libelf$(SHEXT).$(VERSION)
+	ln -fs libelf$(SHEXT).$(VERSION) $(DESTDIR)$(libdir)/libelf$(SHEXT)
 
 uninstall: uninstall-am
-	rm -f $(DESTDIR)$(libdir)/libelf-$(PACKAGE_VERSION).so
-	rm -f $(DESTDIR)$(libdir)/libelf.so.$(VERSION)
-	rm -f $(DESTDIR)$(libdir)/libelf.so
+	rm -f $(DESTDIR)$(libdir)/libelf-$(PACKAGE_VERSION)$(SHEXT)
+	rm -f $(DESTDIR)$(libdir)/libelf$(SHEXT).$(VERSION)
+	rm -f $(DESTDIR)$(libdir)/libelf$(SHEXT)
 
 EXTRA_DIST = libelf.map
 
-CLEANFILES += $(am_libelf_pic_a_OBJECTS) libelf.so libelf.so.$(VERSION)
+CLEANFILES += $(am_libelf_pic_a_OBJECTS) libelf$(SHEXT) libelf$(SHEXT).$(VERSION)

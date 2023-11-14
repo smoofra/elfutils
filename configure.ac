@@ -210,6 +210,12 @@ case $host in
 esac
 AM_CONDITIONAL(LINUX, test $LINUX = yes)
 
+SHEXT=.so
+case $host in
+  *-apple-*)
+    SHEXT=.dylib ;;
+esac
+AC_SUBST(SHEXT)
 
 AC_ARG_ENABLE([sanitize-memory],
               AS_HELP_STRING([--enable-sanitize-memory],

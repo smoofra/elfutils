@@ -50,10 +50,10 @@ else
 libdebuginfod = ./libdebuginfod.a -lpthread $(libcurl_LIBS)
 endif
 else
-libasm = ../libasm/libasm.so
-libdw = ../libdw/libdw.so
-libelf = ../libelf/libelf.so
-libdebuginfod = ./libdebuginfod.so
+libasm = ../libasm/libasm$(SHEXT)
+libdw = ../libdw/libdw$(SHEXT)
+libelf = ../libelf/libelf$(SHEXT)
+libdebuginfod = ./libdebuginfod$(SHEXT)
 endif
 libebl = ../libebl/libebl.a
 libeu = ../lib/libeu.a
@@ -131,26 +131,26 @@ $(LIBDEBUGINFOD_SONAME): $(srcdir)/libdebuginfod.map $(libdebuginfod_so_LIBS)
 		$(libdebuginfod_so_LDLIBS)
 	@$(TEXTREL_CHECK)
 
-libdebuginfod.so: $(LIBDEBUGINFOD_SONAME)
+libdebuginfod$(SHEXT): $(LIBDEBUGINFOD_SONAME)
 	ln -fs $< $@
 
-install: install-am libdebuginfod.so
+install: install-am libdebuginfod$(SHEXT)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	$(INSTALL_PROGRAM) $(LIBDEBUGINFOD_SONAME) \
-		$(DESTDIR)$(libdir)/libdebuginfod-$(PACKAGE_VERSION).so
-	ln -fs libdebuginfod-$(PACKAGE_VERSION).so $(DESTDIR)$(libdir)/$(LIBDEBUGINFOD_SONAME)
-	ln -fs libdebuginfod-$(PACKAGE_VERSION).so $(DESTDIR)$(libdir)/libdebuginfod.so
+		$(DESTDIR)$(libdir)/libdebuginfod-$(PACKAGE_VERSION)$(SHEXT)
+	ln -fs libdebuginfod-$(PACKAGE_VERSION)$(SHEXT) $(DESTDIR)$(libdir)/$(LIBDEBUGINFOD_SONAME)
+	ln -fs libdebuginfod-$(PACKAGE_VERSION)$(SHEXT) $(DESTDIR)$(libdir)/libdebuginfod$(SHEXT)
 
 uninstall: uninstall-am
-	rm -f $(DESTDIR)$(libdir)/libdebuginfod-$(PACKAGE_VERSION).so
+	rm -f $(DESTDIR)$(libdir)/libdebuginfod-$(PACKAGE_VERSION)$(SHEXT)
 	rm -f $(DESTDIR)$(libdir)/$(LIBDEBUGINFOD_SONAME)
-	rm -f $(DESTDIR)$(libdir)/libdebuginfod.so
+	rm -f $(DESTDIR)$(libdir)/libdebuginfod$(SHEXT)
 	rmdir --ignore-fail-on-non-empty $(DESTDIR)$(includedir)/elfutils
 endif
 
 EXTRA_DIST = libdebuginfod.map
 MOSTLYCLEANFILES = $(am_libdebuginfod_pic_a_OBJECTS) $(LIBDEBUGINFOD_SONAME)
-CLEANFILES += $(am_libdebuginfod_pic_a_OBJECTS) libdebuginfod.so
+CLEANFILES += $(am_libdebuginfod_pic_a_OBJECTS) libdebuginfod$(SHEXT)
 
 # automake std-options override: arrange to pass LD_LIBRARY_PATH
 installcheck-binPROGRAMS: $(bin_PROGRAMS)

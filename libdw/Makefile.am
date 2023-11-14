@@ -36,7 +36,7 @@ VERSION = 1
 
 lib_LIBRARIES = libdw.a
 noinst_LIBRARIES = libdw_pic.a
-noinst_DATA = $(noinst_LIBRARIES:_pic.a=.so)
+noinst_DATA = $(noinst_LIBRARIES:_pic.a=$(SHEXT))
 
 include_HEADERS = dwarf.h
 pkginclude_HEADERS = libdw.h known-dwarf.h
@@ -123,9 +123,9 @@ endif
 libdw_so_LIBS = ../libebl/libebl_pic.a ../backends/libebl_backends_pic.a \
 		../libcpu/libcpu_pic.a libdw_pic.a ../libdwelf/libdwelf_pic.a \
 		../libdwfl/libdwfl_pic.a
-libdw_so_DEPS = ../lib/libeu.a ../libelf/libelf.so
+libdw_so_DEPS = ../lib/libeu.a ../libelf/libelf$(SHEXT)
 libdw_so_LDLIBS = $(libdw_so_DEPS) -ldl -lz $(argp_LDADD) $(fts_LIBS) $(obstack_LIBS) $(zip_LIBS) -pthread $(LIBINTL)
-libdw.so: $(srcdir)/libdw.map $(libdw_so_LIBS) $(libdw_so_DEPS)
+libdw$(SHEXT): $(srcdir)/libdw.map $(libdw_so_LIBS) $(libdw_so_DEPS)
 	$(AM_V_CCLD)$(LINK) $(dso_LDFLAGS) -o $@ \
 		$(WL_SONAME) $(WL_VERSION_SCRIPT) \
 		$(NO_UNDEFINED) \
@@ -134,16 +134,16 @@ libdw.so: $(srcdir)/libdw.map $(libdw_so_LIBS) $(libdw_so_DEPS)
 	@$(TEXTREL_CHECK)
 	$(AM_V_at)ln -fs $@ $@.$(VERSION)
 
-install: install-am libdw.so
+install: install-am libdw$(SHEXT)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL_PROGRAM) libdw.so $(DESTDIR)$(libdir)/libdw-$(PACKAGE_VERSION).so
-	ln -fs libdw-$(PACKAGE_VERSION).so $(DESTDIR)$(libdir)/libdw.so.$(VERSION)
-	ln -fs libdw.so.$(VERSION) $(DESTDIR)$(libdir)/libdw.so
+	$(INSTALL_PROGRAM) libdw$(SHEXT) $(DESTDIR)$(libdir)/libdw-$(PACKAGE_VERSION)$(SHEXT)
+	ln -fs libdw-$(PACKAGE_VERSION)$(SHEXT) $(DESTDIR)$(libdir)/libdw$(SHEXT).$(VERSION)
+	ln -fs libdw$(SHEXT).$(VERSION) $(DESTDIR)$(libdir)/libdw$(SHEXT)
 
 uninstall: uninstall-am
-	rm -f $(DESTDIR)$(libdir)/libdw-$(PACKAGE_VERSION).so
-	rm -f $(DESTDIR)$(libdir)/libdw.so.$(VERSION)
-	rm -f $(DESTDIR)$(libdir)/libdw.so
+	rm -f $(DESTDIR)$(libdir)/libdw-$(PACKAGE_VERSION)$(SHEXT)
+	rm -f $(DESTDIR)$(libdir)/libdw$(SHEXT).$(VERSION)
+	rm -f $(DESTDIR)$(libdir)/libdw$(SHEXT)
 	rmdir --ignore-fail-on-non-empty $(DESTDIR)$(includedir)/elfutils
 
 libdwfl_objects = $(shell $(AR) t ../libdwfl/libdwfl.a | grep -v SYMDEF)
@@ -166,4 +166,4 @@ noinst_HEADERS = libdwP.h memory-access.h dwarf_abbrev_hash.h \
 
 EXTRA_DIST = libdw.map
 
-MOSTLYCLEANFILES = $(am_libdw_pic_a_OBJECTS) libdw.so libdw.so.$(VERSION)
+MOSTLYCLEANFILES = $(am_libdw_pic_a_OBJECTS) libdw$(SHEXT) libdw$(SHEXT).$(VERSION)
