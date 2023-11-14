@@ -1313,7 +1313,8 @@ instrtable_out (void)
 	      while (nbits + remaining > 8)
 		{
 		  fprintf (outfile, " %#" PRIx8 ", %#" PRIx8 ",",
-			   mask << (8 - nbits), byte << (8 - nbits));
+			   (uint8_t) (mask << (8 - nbits)), 
+                           (uint8_t) (byte << (8 - nbits)));
 		  remaining = nbits + remaining - 8;
 		  byte = mask = nbits = 0;
 		  if (--nbytes == 0)

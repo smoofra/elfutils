@@ -8728,21 +8728,21 @@ print_form_data (Dwarf *dbg, int form, const unsigned char *readp,
 	  return readendp;
 	}
       val = *readp++;
-      printf (" %" PRIx8, (unsigned int) val);
+      printf (" %" PRIx8, (uint8_t) val);
       break;
 
     case DW_FORM_data2:
       if (readendp - readp < 2)
 	goto invalid_data;
       val = read_2ubyte_unaligned_inc (dbg, readp);
-      printf(" %" PRIx16, (unsigned int) val);
+      printf(" %" PRIx16, (uint16_t) val);
       break;
 
     case DW_FORM_data4:
       if (readendp - readp < 4)
 	goto invalid_data;
       val = read_4ubyte_unaligned_inc (dbg, readp);
-      printf (" %" PRIx32, (unsigned int) val);
+      printf (" %" PRIx32, (uint32_t) val);
       break;
 
     case DW_FORM_data8:
@@ -10684,7 +10684,7 @@ print_debug_macro_section (Dwfl_Module *dwflmod __attribute__ ((unused)),
       printf ("\n");
 
       unsigned int offset_len = (flag & 0x01) ? 8 : 4;
-      printf (_(" Offset length:      %" PRIu8 "\n"), offset_len);
+      printf (_(" Offset length:      %" PRIu8 "\n"), (uint8_t)offset_len);
       Dwarf_Off line_offset = -1;
       if (flag & 0x02)
 	{
@@ -10718,13 +10718,13 @@ print_debug_macro_section (Dwfl_Module *dwflmod __attribute__ ((unused)),
 	    goto invalid_data;
 	  unsigned int tlen = *readp++;
 	  printf (_("  extension opcode table, %" PRIu8 " items:\n"),
-		  tlen);
+		  (uint8_t)tlen);
 	  for (unsigned int i = 0; i < tlen; i++)
 	    {
 	      if (readp + 1 > readendp)
 		goto invalid_data;
 	      unsigned int opcode = *readp++;
-	      printf (_("    [%" PRIx8 "]"), opcode);
+	      printf (_("    [%" PRIx8 "]"), (uint8_t) opcode);
 	      if (opcode < DW_MACRO_lo_user
 		  || opcode > DW_MACRO_hi_user)
 		goto invalid_data;
@@ -10736,7 +10736,7 @@ print_debug_macro_section (Dwfl_Module *dwflmod __attribute__ ((unused)),
 	      unsigned int args = *readp++;
 	      if (args > 0)
 		{
-		  printf (_(" %" PRIu8 " arguments:"), args);
+		  printf (_(" %" PRIu8 " arguments:"), (uint8_t)args);
 		  while (args > 0)
 		    {
 		      if (readp + 1 > readendp)
@@ -10911,7 +10911,7 @@ print_debug_macro_section (Dwfl_Module *dwflmod __attribute__ ((unused)),
 	      break;
 
 	    default:
-	      printf ("%*svendor opcode 0x%" PRIx8, level, "", opcode);
+	      printf ("%*svendor opcode 0x%" PRIx8, level, "", (uint8_t) opcode);
 	      if (opcode < DW_MACRO_lo_user
 		  || opcode > DW_MACRO_lo_user
 		  || vendor[opcode - DW_MACRO_lo_user] == NULL)

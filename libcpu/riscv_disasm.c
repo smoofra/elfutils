@@ -284,7 +284,7 @@ riscv_disasm (Ebl *ebl,
 	      mne = (first & 0xf80) == 0 ? "c.li" : "li";
 	      op[0] = REG((first >> 7) & 0x1f);
 	      snprintf (addrbuf, sizeof (addrbuf), "%" PRId16,
-			(UINT16_C (0) - ((first >> 7) & 0x20)) | ((first >> 2) & 0x1f));
+			(uint16_t) ((UINT16_C (0) - ((first >> 7) & 0x20)) | ((first >> 2) & 0x1f)));
 	      op[1] = addrbuf;
 	      break;
 	    case 8:

@@ -191,7 +191,7 @@ general_mod$r_m (struct output_data *d)
 	  n = 0;
 	  if (!nodisp)
 	    n = snprintf (tmpbuf, sizeof (tmpbuf), "%s0x%" PRIx16,
-			  disp < 0 ? "-" : "", disp < 0 ? -disp : disp);
+			  disp < 0 ? "-" : "", (uint16_t) (disp < 0 ? -disp : disp));
 
 	  if ((modrm & 0x4) == 0)
 	    n += snprintf (tmpbuf + n, sizeof (tmpbuf) - n, "(%%b%c,%%%ci)",
