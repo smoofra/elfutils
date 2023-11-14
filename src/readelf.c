@@ -5153,7 +5153,7 @@ print_ops (Dwfl_Module *dwflmod, Dwarf *dbg, int indent, int indentrest,
 	  uint8_t usize = *(uint8_t *) data++;
 	  NEED (usize);
 	  printf ("%*s[%2" PRIuMAX "] %s [%6" PRIxMAX "] ",
-		  indent, "", (uintmax_t) offset, op_name, uleb);
+		  indent, "", (uintmax_t) offset, op_name, (uintmax_t)uleb);
 	  print_block (usize, data);
 	  data += usize;
 	  CONSUME (data - start);
@@ -5190,7 +5190,7 @@ print_ops (Dwfl_Module *dwflmod, Dwarf *dbg, int indent, int indentrest,
 	    uleb += cu->start;
 	  printf ("%*s[%2" PRIuMAX "] %s %" PRIu8 " [%6" PRIxMAX "]\n",
 		  indent, "", (uintmax_t) offset,
-		  op_name, usize, uleb);
+		  op_name, usize, (uintmax_t)uleb);
 	  CONSUME (data - start);
 	  offset += 1 + (data - start);
 	  break;
@@ -5204,7 +5204,7 @@ print_ops (Dwfl_Module *dwflmod, Dwarf *dbg, int indent, int indentrest,
 	  get_uleb128 (uleb, data, data + len);
 	  printf ("%*s[%4" PRIuMAX "] %s %" PRIu8 " [%6" PRIxMAX "]\n",
 		  indent, "", (uintmax_t) offset,
-		  op_name, usize, uleb);
+		  op_name, usize, (uintmax_t)uleb);
 	  CONSUME (data - start);
 	  offset += 1 + (data - start);
 	  break;
@@ -5221,7 +5221,7 @@ print_ops (Dwfl_Module *dwflmod, Dwarf *dbg, int indent, int indentrest,
 	  if (uleb != 0 && ! print_unresolved_addresses && cu != NULL)
 	    uleb += cu->start;
 	  printf ("%*s[%2" PRIuMAX "] %s [%6" PRIxMAX "]\n",
-		  indent, "", (uintmax_t) offset, op_name, uleb);
+		  indent, "", (uintmax_t) offset, op_name, (uintmax_t)uleb);
 	  CONSUME (data - start);
 	  offset += 1 + (data - start);
 	  break;
