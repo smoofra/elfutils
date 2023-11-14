@@ -112,6 +112,10 @@ if GNU_LINKER
 WL_SONAME=-Wl,--soname,$(LIBDEBUGINFOD_SONAME)
 endif
 
+if APPLE_LINKER
+WL_SONAME=-Wl,-install_name,@rpath/$(LIBDEBUGINFOD_SONAME)
+endif
+
 if SYMBOL_VERSIONING
 WL_VERSION_SCRIPT=-WL,--version-script,$<
 endif

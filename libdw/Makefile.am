@@ -110,6 +110,10 @@ if GNU_LINKER
 WL_SONAME=-Wl,--soname,$@.$(VERSION),--enable-new-dtags
 endif
 
+if APPLE_LINKER
+WL_SONAME=-Wl,-install_name,@rpath/$@.$(VERSION)
+endif
+
 if SYMBOL_VERSIONING
 WL_VERSION_SCRIPT=-WL,--version-script,$<
 endif
