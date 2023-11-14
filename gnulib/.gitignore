@@ -20,3 +20,4 @@
 /wchar.h
 /wctype.h
 *.dirstamp
+/assert.h
