@@ -526,7 +526,7 @@ find_symbol (Dwfl_Module *mod,
 }
 
 static bool
-adjust_to_section (const char *name, uintmax_t *addr, Dwfl *dwfl)
+adjust_to_section (const char *name, Dwarf_Addr *addr, Dwfl *dwfl)
 {
   /* It was (section)+offset.  This makes sense if there is
      only one module to look in for a section.  */
@@ -638,16 +638,16 @@ static int
 handle_address (const char *string, Dwfl *dwfl)
 {
   char *endp;
-  uintmax_t addr = strtoumax (string, &endp, 16);
+  Dwarf_Addr addr = strtoumax (string, &endp, 16);
   if (endp == string || *endp != '\0')
     {
       bool parsed = false;
       int i, j;
       char *name = NULL;
-      if (sscanf (string, "(%m[^)])%" PRIiMAX "%n", &name, &addr, &i) == 2
+      if (sscanf (string, "(%m[^)])%" PRIi64 "%n", &name, &addr, &i) == 2
 	  && string[i] == '\0')
 	parsed = adjust_to_section (name, &addr, dwfl);
-      switch (sscanf (string, "%m[^-+]%n%" PRIiMAX "%n", &name, &i, &addr, &j))
+      switch (sscanf (string, "%m[^-+]%n%" PRIi64 "%n", &name, &i, &addr, &j))
 	{
 	default:
 	  break;
