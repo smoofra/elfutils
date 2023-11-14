@@ -224,8 +224,32 @@ static inline char *strchrnul(const char *s, int c) {
 #endif
 
 #if defined(__APPLE__)
+static inline void *
+memrchr(const void *s, int c, size_t n) {
+  const unsigned char *bottom = s;
+  for (const unsigned char *p = bottom + n - 1; p >= bottom; p--) {
+    if (*p == c) {
+      return (void*)p;
+    }
+  }
+  return NULL;
+}
+#endif
+
+#if defined(__APPLE__)
+#define st_atim st_atimespec
+#define st_mtim st_mtimespec
+#define st_ctim st_ctimespec
+#endif
+
+#ifdef __APPLE__
+#define FNM_EXTMATCH 0 // FIXME
+#endif
+
+#if defined(__APPLE__)
 #define fputc_unlocked(c,f) fputc(c,f)
 #define fputs_unlocked(s,f) fputs(s,f)
+#define fwrite_unlocked(p, s, n, f) fwrite(p,s,n,f)
 #endif
 
 #include "portable-tdestroy.h"
