@@ -10,7 +10,7 @@ struct tdestroy_context {
 __thread struct tdestroy_context *tdestroy_context;
 
 static inline void
-tdestroy_action(const void *nodep, VISIT which, int) {
+tdestroy_action(const void *nodep, VISIT which, int depth __unused) {
     if (which == leaf || which == endorder) {
         void *key = *(void**)nodep;
         tdelete(key, tdestroy_context->rootp, tdestroy_context->compare);
