@@ -46,7 +46,7 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_FILES([config/Makefile])
 
 AC_COPYRIGHT([Copyright (C) 1996-2023 The elfutils developers.])
-AC_PREREQ(2.63)			dnl Minimum Autoconf version required.
+AC_PREREQ(2.64)			dnl Minimum Autoconf version required.
 
 dnl We use GNU make extensions; automake 1.10 defaults to -Wportability.
 AM_INIT_AUTOMAKE([gnits 1.11 -Wno-portability dist-bzip2 no-dist-gzip parallel-tests])
@@ -89,6 +89,7 @@ AS_IF([test "$use_locks" = yes],
 AH_TEMPLATE([USE_LOCKS], [Defined if libraries should be thread-safe.])
 
 m4_version_prereq([2.70], [AC_PROG_CC], [AC_PROG_CC_C99])
+gl_EARLY
 AC_PROG_CXX
 AC_PROG_RANLIB
 AC_PROG_YACC
@@ -97,6 +98,7 @@ AC_PROG_LEX([noyywrap])
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_CHECK_TOOL([READELF], [readelf])
 AC_CHECK_TOOL([NM], [nm])
+gl_INIT
 
 AC_CACHE_CHECK([whether gcc supports __attribute__((visibility()))],
 	ac_cv_visibility, [dnl
@@ -736,6 +738,9 @@ esac
 AC_SUBST([obstack_LIBS])
 
 dnl The directories with content.
+
+dnl GNU portability library
+AC_CONFIG_FILES([gnulib/Makefile])
 
 dnl Documentation.
 AC_CONFIG_FILES([doc/Makefile])

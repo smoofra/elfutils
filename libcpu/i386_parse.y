@@ -36,7 +36,7 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <math.h>
-#include <obstack.h>
+#include "obstack_printf.h"
 #include <search.h>
 #include <stdbool.h>
 #include <stdio.h>

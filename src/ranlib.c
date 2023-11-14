@@ -27,7 +27,7 @@
 #include <fcntl.h>
 #include <gelf.h>
 #include <locale.h>
-#include <obstack.h>
+#include "obstack.h"
 #include <stdlib.h>
 #include <stdio.h>
 #ifndef __APPLE__

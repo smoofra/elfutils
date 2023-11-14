@@ -242,10 +242,6 @@ memrchr(const void *s, int c, size_t n) {
 #define st_ctim st_ctimespec
 #endif
 
-#ifdef __APPLE__
-#define FNM_EXTMATCH 0 // FIXME
-#endif
-
 #if defined(__APPLE__)
 #define fputc_unlocked(c,f) fputc(c,f)
 #define fputs_unlocked(s,f) fputs(s,f)

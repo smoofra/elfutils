@@ -28,8 +28,8 @@
 ## not, see <http://www.gnu.org/licenses/>.
 ##
 include $(top_srcdir)/config/eu.am
-AM_CPPFLAGS += -I$(srcdir)/../libelf -I$(srcdir)/../libebl \
-	    -I$(srcdir)/../libdw -I$(srcdir)/../libasm
+AM_CPPFLAGS += -include $(srcdir)/../config.h -I$(srcdir)/../libelf -I$(srcdir)/../libebl \
+	    -I$(srcdir)/../libdw -I$(srcdir)/../libasm -I$(srcdir)/../gnulib
 if BUILD_STATIC
 AM_CFLAGS += $(fpic_CFLAGS)
 endif
@@ -88,12 +88,13 @@ endif
 i386_lex_no_Werror = yes
 
 libeu = ../lib/libeu.a
+gnulib = ../gnulib/libgnu.a
 
 i386_lex_CFLAGS = -Wno-unused-label -Wno-unused-function -Wno-sign-compare \
 		  -Wno-implicit-fallthrough
 i386_parse.o: i386_parse.c i386.mnemonics
 i386_lex.o: i386_parse.h
-i386_gendis_LDADD = $(libeu) -lm $(obstack_LIBS) $(LIBINTL)
+i386_gendis_LDADD = $(libeu) -lm $(obstack_LIBS) $(LIBINTL) $(gnulib)
 
 i386_parse.h: i386_parse.c ;
 

@@ -21,7 +21,8 @@ DEFS += $(YYDEBUG) -DDEBUGPRED=@DEBUGPRED@ \
 	-DSRCDIR=\"$(shell cd $(srcdir);pwd)\" -DOBJDIR=\"$(shell pwd)\"
 AM_CPPFLAGS += -I$(srcdir)/../libelf -I$(srcdir)/../libebl \
 	    -I$(srcdir)/../libdw -I$(srcdir)/../libdwelf \
-	    -I$(srcdir)/../libdwfl -I$(srcdir)/../libasm
+	    -I$(srcdir)/../libdwfl -I$(srcdir)/../libasm \
+	    -I$(srcdir)/../gnulib
 
 AM_LDFLAGS = $(STACK_USAGE_NO_ERROR)
 
@@ -58,6 +59,7 @@ libelf = ../libelf/libelf$(SHEXT)
 endif
 libebl = ../libebl/libebl.a ../backends/libebl_backends.a ../libcpu/libcpu.a
 libeu = ../lib/libeu.a
+gnulib = ../gnulib/libgnu.a
 
 if DEMANGLE
 demanglelib = -lstdc++
@@ -77,23 +79,23 @@ unstrip_no_Wstack_usage = yes
 
 readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
 nm_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) \
-	   $(demanglelib) $(LIBINTL)
+	   $(demanglelib) $(LIBINTL) $(gnulib)
 size_LDADD = $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
-strip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+strip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL) $(gnulib)
 elflint_LDADD  = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
 findtextrel_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
 addr2line_LDADD = $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(demanglelib) $(LIBINTL)
 elfcmp_LDADD = $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
 objdump_LDADD  = $(libasm) $(libebl) $(libdw) $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
-ranlib_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL)
+ranlib_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL) $(gnulib)
 strings_LDADD = $(libelf) $(libeu) $(argp_LDADD) $(LIBINTL)
-ar_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL)
-unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+ar_LDADD = libar.a $(libelf) $(libeu) $(argp_LDADD) $(obstack_LIBS) $(LIBINTL) $(gnulib)
+unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL) $(gnulib)
 stack_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(demanglelib) $(LIBINTL)
-elfcompress_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
+elfcompress_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL) $(gnulib)
 elfclassify_LDADD = $(libelf) $(libdw) $(libeu) $(argp_LDADD) $(LIBINTL)
 srcfiles_SOURCES = srcfiles.cxx
-srcfiles_LDADD = $(libdw) $(libelf) $(libeu)  $(argp_LDADD) $(LIBINTL)
+srcfiles_LDADD = $(libdw) $(libelf) $(libeu)  $(argp_LDADD) $(LIBINTL) $(gnulib)
 
 installcheck-binPROGRAMS: $(bin_PROGRAMS)
 	bad=0; pid=$$$$; list="$(bin_PROGRAMS)"; for p in $$list; do \

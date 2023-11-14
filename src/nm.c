@@ -31,7 +31,7 @@
 #include <inttypes.h>
 #include <libdw.h>
 #include <locale.h>
-#include <obstack.h>
+#include "obstack_printf.h"
 #include <search.h>
 #include <stdbool.h>
 #include <stdio.h>

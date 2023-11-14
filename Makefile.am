@@ -26,11 +26,11 @@ AM_MAKEFLAGS = --no-print-directory
 
 pkginclude_HEADERS = version.h
 
-SUBDIRS = config lib libelf libcpu backends libebl libdwelf libdwfl libdw \
+SUBDIRS =  config lib gnulib libelf libcpu backends libebl libdwelf libdwfl libdw \
 	  libasm debuginfod src po doc tests
 
 EXTRA_DIST = elfutils.spec GPG-KEY NOTES CONTRIBUTING SECURITY \
-	     COPYING COPYING-GPLV2 COPYING-LGPLV3
+	     COPYING COPYING-GPLV2 COPYING-LGPLV3 m4/gnulib-cache.m4
 
 # Make sure the test install uses lib64 when $LIB will yield lib64.
 # Make sure the test build uses the same compiler, which on e.g. ppc64
