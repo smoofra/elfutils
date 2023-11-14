@@ -30,7 +30,7 @@ AM_LDFLAGS += -Wl,-rpath-link,../libelf:../libdw
 endif
 
 if APPLE_LINKER
-AM_LDFLAGS += -Wl,-rpath,@executable_path/../libelf -Wl,-rpath,@executable_path/../libdw
+AM_LDFLAGS += -Wl,-rpath,@executable_path/../lib
 endif
 
 bin_PROGRAMS = readelf nm size strip elflint findtextrel addr2line \

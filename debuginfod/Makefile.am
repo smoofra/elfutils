@@ -65,7 +65,7 @@ AM_LDFLAGS = -Wl,-rpath-link,../libelf:../libdw:.
 endif
 
 if APPLE_LINKER
-AM_LDFLAGS = -Wl,-rpath,@executable_path/../libelf -Wl,-rpath,@executable_path/../libdw -Wl,-rpath,@executable_path
+AM_LDFLAGS = -Wl,-rpath,@executable_path/../lib
 endif
 
 bin_PROGRAMS =
